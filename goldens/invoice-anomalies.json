@@ -1,0 +1,6 @@
+{
+  "top5_schema": {
+    "id": "string",
+    "amount": "number"
+  }
+}

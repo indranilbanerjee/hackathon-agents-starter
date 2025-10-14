@@ -1,0 +1,17 @@
+[
+  {
+    "owner": "Mina",
+    "title": "Prepare pricing sheet",
+    "due": "2025-10-20"
+  },
+  {
+    "owner": "Raj",
+    "title": "Update pitch deck",
+    "due": "2025-10-18"
+  },
+  {
+    "owner": "Priya",
+    "title": "Schedule beta calls",
+    "due": "2025-10-16"
+  }
+]

@@ -1,0 +1,192 @@
+{
+  "info": {
+    "name": "30 Agents \u2013 Common API Calls",
+    "_postman_id": "b5b3e5d0-54c2-47a8-90d8-1760450437.775797",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Google Calendar: Create Event",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{GOOGLE_OAUTH_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "https://www.googleapis.com/calendar/v3/calendars/primary/events",
+          "protocol": "https",
+          "host": [
+            "www",
+            "googleapis",
+            "com"
+          ],
+          "path": [
+            "calendar",
+            "v3",
+            "calendars",
+            "primary",
+            "events"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"summary\": \"Focus Block\",\n  \"start\": {\n    \"dateTime\": \"2025-10-20T09:00:00+05:30\"\n  },\n  \"end\": {\n    \"dateTime\": \"2025-10-20T10:30:00+05:30\"\n  }\n}"
+        }
+      }
+    },
+    {
+      "name": "Slack: Post Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{SLACK_BOT_TOKEN}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://slack.com/api/chat.postMessage",
+          "protocol": "https",
+          "host": [
+            "slack",
+            "com"
+          ],
+          "path": [
+            "api",
+            "chat.postMessage"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"channel\": \"#alerts\",\n  \"text\": \"Hello from 30 Agents!\"\n}"
+        }
+      }
+    },
+    {
+      "name": "Zendesk: List Tickets",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{ZENDESK_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "https://{{ZENDESK_SUBDOMAIN}}.zendesk.com/api/v2/tickets",
+          "protocol": "https",
+          "host": [
+            "{{ZENDESK_SUBDOMAIN}}",
+            ".zendesk",
+            ".com"
+          ],
+          "path": [
+            "api",
+            "v2",
+            "tickets"
+          ]
+        }
+      }
+    },
+    {
+      "name": "Intercom: Create Message",
+      "request": {
+        "method": "POST",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{INTERCOM_ACCESS_TOKEN}}"
+          },
+          {
+            "key": "Content-Type",
+            "value": "application/json"
+          }
+        ],
+        "url": {
+          "raw": "https://api.intercom.io/messages",
+          "protocol": "https",
+          "host": [
+            "api",
+            "intercom",
+            "io"
+          ],
+          "path": [
+            "messages"
+          ]
+        },
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"message_type\": \"email\",\n  \"subject\": \"Release update\",\n  \"body\": \"We shipped SSO\",\n  \"to\": {\n    \"type\": \"user\",\n    \"email\": \"user@example.com\"\n  }\n}"
+        }
+      }
+    },
+    {
+      "name": "GitHub: List Releases",
+      "request": {
+        "method": "GET",
+        "header": [
+          {
+            "key": "Authorization",
+            "value": "Bearer {{GITHUB_TOKEN}}"
+          }
+        ],
+        "url": {
+          "raw": "https://api.github.com/repos/{{GITHUB_OWNER}}/{{GITHUB_REPO}}/releases",
+          "protocol": "https",
+          "host": [
+            "api",
+            "github",
+            "com"
+          ],
+          "path": [
+            "repos",
+            "{{GITHUB_OWNER}}",
+            "{{GITHUB_REPO}}",
+            "releases"
+          ]
+        }
+      }
+    }
+  ],
+  "variable": [
+    {
+      "key": "GOOGLE_OAUTH_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "SLACK_BOT_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "ZENDESK_SUBDOMAIN",
+      "value": ""
+    },
+    {
+      "key": "ZENDESK_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "INTERCOM_ACCESS_TOKEN",
+      "value": ""
+    },
+    {
+      "key": "GITHUB_OWNER",
+      "value": "your-org"
+    },
+    {
+      "key": "GITHUB_REPO",
+      "value": "your-repo"
+    },
+    {
+      "key": "GITHUB_TOKEN",
+      "value": ""
+    }
+  ]
+}

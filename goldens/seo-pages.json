@@ -1,0 +1,11 @@
+{
+  "count": 6,
+  "urls": [
+    "https://example.com/",
+    "https://example.com/pricing",
+    "https://example.com/blog/post-1",
+    "https://example.com/blog/post-2",
+    "https://example.com/docs/start",
+    "https://example.com/docs/api"
+  ]
+}

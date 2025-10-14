@@ -1,0 +1,7 @@
+{
+  "issue": "Billing issue",
+  "env": "prod",
+  "steps_tried": "Charged twice; Refund requested",
+  "severity": "high",
+  "next_action": "Route to Billing"
+}

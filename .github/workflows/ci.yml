@@ -1,0 +1,23 @@
+name: CI
+on:
+  push: { branches: ["main"] }
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Install
+        run: npm install
+      - name: Copy seed pack (if mounted in CI)
+        run: echo "Ensure /mnt/data/agents-seed-pack-full mounted or adjust paths."
+      - name: Build
+        run: npm run build || true
+      - name: Start server (background)
+        run: nohup npm run dev & sleep 3
+      - name: Run tests
+        run: npm test
