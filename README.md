@@ -109,14 +109,36 @@ This repository follows a modular architecture designed for scalability and main
 
 ## 📚 Documentation
 
-- [🚀 Quick Start Guide](docs/quick-start.md)
-- [🏗️ Architecture Overview](docs/architecture.md)
-- [🔧 Configuration Guide](docs/configuration.md)
-- [🧪 Testing Guide](docs/testing.md)
-- [🚀 Deployment Guide](docs/deployment.md)
-- [🔍 Troubleshooting](docs/troubleshooting.md)
-- [📖 API Reference](docs/api-reference.md)
-- [🎯 Agent Development Guide](docs/agent-development.md)
+### **Getting Started**
+- [🚀 Quick Start Guide](docs/quick-start.md) - Get up and running in 5 minutes
+- [🏗️ Architecture Overview](docs/architecture.md) - System design and components
+- [🔧 Configuration Guide](docs/configuration.md) - Environment variables and setup
+
+### **Technical Guides**
+- [⚙️ Technical Requirements & Alternatives](docs/technical-requirements.md) - APIs, tools, techniques, and alternatives
+- [🤖 AI Models Guide](docs/ai-models-guide.md) - Latest AI models, costs, and recommendations (Oct 2025)
+- [🗄️ Database & Hosting Guide](docs/database-hosting.md) - Database options, hosting platforms, and cost analysis
+- [📖 API Reference](docs/api-reference.md) - Complete API documentation for all 30 agents
+- [🧪 Testing Guide](docs/testing.md) - Unit, integration, and E2E testing strategies
+
+### **Deployment & Operations**
+- [🚀 Deployment Guide](docs/deployment.md) - Production deployment (Vercel, Docker, AWS, GCP)
+- [🔍 Troubleshooting Guide](docs/troubleshooting.md) - Common issues, solutions, and debugging
+
+### **Development & Contribution**
+- [🎯 Agent Development Guide](docs/agent-development.md) - Build custom agents and extend functionality
+- [🤝 Contributing Guidelines](CONTRIBUTING.md) - How to contribute to the project
+
+### **Demo & Sharing**
+- [🎬 Demo & Sharing Guide](docs/demo-sharing.md) - Create demos, presentations, and share your work
+- [📚 Resources Directory](docs/resources.md) - APIs, tools, learning resources, and community links
+
+### **Individual Agent Documentation**
+- [💰 Smart Payment Follow-Up](docs/agents/day01-smart-payment-follow-up.md) - Automate invoice payment reminders
+- [📝 Meeting Action Enforcer](docs/agents/day08-meeting-actions.md) - Extract action items from meetings
+- [🔍 SEO Issue Sentinel](docs/agents/day15-seo-sentinel.md) - Monitor and optimize SEO health
+- [🚨 Invoice Fraud Detector](docs/agents/day25-fraud-detector.md) - Detect suspicious invoices with ML
+- [📁 All Agent Docs](docs/agents/) - Complete documentation for all 30 agents
 
 ## 🌟 Key Features
 
