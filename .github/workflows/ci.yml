@@ -11,13 +11,105 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
-      - name: Install
+
+      - name: Install dependencies
         run: npm install
-      - name: Copy seed pack (if mounted in CI)
-        run: echo "Ensure /mnt/data/agents-seed-pack-full mounted or adjust paths."
-      - name: Build
-        run: npm run build || true
-      - name: Start server (background)
-        run: nohup npm run dev & sleep 3
+
+      - name: Create mock data directories for CI
+        run: |
+          mkdir -p /tmp/agents-seed-pack-full/day15_SEO_Sentinel
+          mkdir -p /tmp/agents-seed-pack-full/day25_Invoice_Fraud_Anomaly_Detector
+          mkdir -p /tmp/agents-seed-pack-full/day20_Meeting_Action_Enforcer
+          mkdir -p /tmp/agents-seed-pack-full/day30_Support_Ticket_Brief
+
+          # Create mock sitemap.xml
+          cat > /tmp/agents-seed-pack-full/day15_SEO_Sentinel/sitemap.xml << 'EOF'
+          <?xml version="1.0" encoding="UTF-8"?>
+          <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+            <url><loc>https://example.com/</loc><lastmod>2024-01-01</lastmod></url>
+            <url><loc>https://example.com/about</loc><lastmod>2024-01-02</lastmod></url>
+            <url><loc>https://example.com/contact</loc><lastmod>2024-01-03</lastmod></url>
+          </urlset>
+          EOF
+
+          # Create mock invoices.csv
+          cat > /tmp/agents-seed-pack-full/day25_Invoice_Fraud_Anomaly_Detector/invoices.csv << 'EOF'
+          invoice_id,amount,date,vendor,status
+          INV-001,15000,2024-01-15,TechCorp,paid
+          INV-002,25000,2024-01-20,DataSys,pending
+          INV-003,8500,2024-01-25,CloudServ,paid
+          INV-004,12000,2024-02-01,DevTools,pending
+          INV-005,30000,2024-02-05,Enterprise,paid
+          EOF
+
+          # Create mock transcript.txt
+          cat > /tmp/agents-seed-pack-full/day20_Meeting_Action_Enforcer/transcript.txt << 'EOF'
+          Meeting Transcript - Project Planning Session
+
+          John: We need to finalize the budget by Friday. @Sarah can you prepare the financial report?
+          Sarah: Sure, I'll have it ready by Thursday. @Mike, can you review the technical requirements?
+          Mike: I'll review them by Wednesday and send feedback. @John, we should schedule a follow-up meeting.
+          John: Good idea. Let's meet again next Monday to discuss the final details.
+          EOF
+
+          # Create mock tickets.json
+          cat > /tmp/agents-seed-pack-full/day30_Support_Ticket_Brief/tickets.json << 'EOF'
+          [
+            {
+              "id": "TICKET-001",
+              "subject": "Billing Issue - Incorrect Charges",
+              "description": "Customer reports being charged twice for the same service",
+              "priority": "high",
+              "status": "open",
+              "created_at": "2024-01-15T10:00:00Z"
+            },
+            {
+              "id": "TICKET-002",
+              "subject": "Login Problems",
+              "description": "User cannot access their account after password reset",
+              "priority": "medium",
+              "status": "in_progress",
+              "created_at": "2024-01-16T14:30:00Z"
+            }
+          ]
+          EOF
+
+      - name: Type check
+        run: npx tsc --noEmit
+
+      - name: Build application
+        run: npm run build
+
+      - name: Start server in background
+        run: |
+          npm run dev &
+          SERVER_PID=$!
+          echo "SERVER_PID=$SERVER_PID" >> $GITHUB_ENV
+
+      - name: Wait for server to be ready
+        run: |
+          echo "Waiting for server to start..."
+          for i in {1..30}; do
+            if curl -f http://localhost:3000/api/health >/dev/null 2>&1; then
+              echo "Server is ready!"
+              break
+            fi
+            echo "Attempt $i/30: Server not ready yet, waiting 2 seconds..."
+            sleep 2
+          done
+
+          # Final check
+          if ! curl -f http://localhost:3000/api/health >/dev/null 2>&1; then
+            echo "Server failed to start within 60 seconds"
+            exit 1
+          fi
+
       - name: Run tests
         run: npm test
+
+      - name: Cleanup
+        if: always()
+        run: |
+          if [ ! -z "$SERVER_PID" ]; then
+            kill $SERVER_PID || true
+          fi
