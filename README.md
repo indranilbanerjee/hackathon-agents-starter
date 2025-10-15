@@ -5,9 +5,12 @@
 
 A **production-ready scaffold** for building 30 intelligent business automation agents. This repository provides a complete foundation for creating AI-powered agents that solve real-world business problems across finance, operations, marketing, HR, and more.
 
+**🌐 NEW: GitHub Data Access** - Team members can now access demo data directly from GitHub without local setup!
+
 ## 🚀 What's Inside
 
 - **30 Pre-built Agent Templates** - Complete with sample data and configurations
+- **🌐 GitHub Data Access** - Direct access to demo data without local setup
 - **Next.js API Framework** - Production-ready endpoints with TypeScript
 - **Comprehensive Test Suite** - Vitest + GitHub Actions CI/CD
 - **Real-world Data Sets** - Realistic CSV, JSON, and configuration files
@@ -17,6 +20,19 @@ A **production-ready scaffold** for building 30 intelligent business automation 
 
 ## 📋 Quick Start
 
+### 🌐 **Option 1: GitHub Data Access (No Local Setup)**
+```bash
+# Access any agent's demo data directly from GitHub
+curl http://localhost:3000/api/github/invoice-anomalies
+
+# Get specific data files
+curl http://localhost:3000/api/github/invoice-anomalies/invoices.csv
+
+# Direct GitHub raw URLs (work anywhere)
+curl https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/day25_Invoice_Fraud_Anomaly_Detector/invoices.csv
+```
+
+### 💻 **Option 2: Full Local Development**
 ```bash
 # Clone the repository
 git clone https://github.com/indranilbanerjee/hackathon-agents-starter.git
@@ -42,8 +58,13 @@ This repository follows a modular architecture designed for scalability and main
 
 ```
 ├── app/api/              # Next.js API routes for agent endpoints
+│   ├── agents/           # Agent registry and data access APIs
+│   └── github/           # GitHub data access endpoints
 ├── data/                 # Seed data and configurations for all agents
 ├── lib/                  # Shared schemas and utilities
+│   ├── agent-registry.ts # Central agent configuration
+│   ├── data-access.ts    # Local + GitHub data access
+│   └── github-data-access.ts # Direct GitHub integration
 ├── tests/                # Comprehensive test suite
 ├── docs/                 # Detailed documentation
 └── postman/              # API collection for testing
@@ -126,7 +147,8 @@ This repository follows a modular architecture designed for scalability and main
 - [🔍 Troubleshooting Guide](docs/troubleshooting.md) - Common issues, solutions, and debugging
 
 ### **Development & Contribution**
-- [🎯 Agent Development Guide](docs/agent-development.md) - Build custom agents and extend functionality
+- [🎯 Agent Development Guide](docs/agent-development-guide.md) - Build custom agents with GitHub data access
+- [🌐 GitHub Data Access Guide](docs/agent-development-guide.md#github-data-access-examples) - Use demo data without local setup
 - [🤝 Contributing Guidelines](CONTRIBUTING.md) - How to contribute to the project
 
 ### **Demo & Sharing**
@@ -142,6 +164,13 @@ This repository follows a modular architecture designed for scalability and main
 
 ## 🌟 Key Features
 
+### 🌐 **GitHub Data Integration**
+- **Direct GitHub access** - No local setup required for team members
+- **Automatic fallbacks** - Local files → GitHub → Mock data
+- **Multiple access methods** - API endpoints, raw URLs, structured responses
+- **CORS support** - Works from web applications and external tools
+- **Real-time data** - Always up-to-date with repository changes
+
 ### Production-Ready Architecture
 - Type-safe API endpoints with Zod validation
 - Comprehensive error handling and logging
@@ -153,6 +182,7 @@ This repository follows a modular architecture designed for scalability and main
 - Realistic business scenarios and edge cases
 - Multi-format support (CSV, JSON, XML, YAML)
 - Privacy-compliant synthetic data
+- **GitHub-accessible** - Available via direct URLs
 
 ### Extensive Integration Support
 - 20+ external API integrations
@@ -165,26 +195,51 @@ This repository follows a modular architecture designed for scalability and main
 - Comprehensive test coverage
 - Postman collections for API testing
 - Detailed documentation and examples
+- **GitHub data access** - Work without local repository
 
 ## 🧪 Example Usage
 
-### Meeting Action Enforcer
+### 🌐 **GitHub Data Access (New!)**
 ```bash
+# Browse all available agents
+curl http://localhost:3000/api/agents
+
+# Get agent data directly from GitHub
+curl http://localhost:3000/api/github/invoice-anomalies
+
+# Access specific files from GitHub
+curl http://localhost:3000/api/github/meeting-actions/transcript.txt
+
+# Direct GitHub raw URLs (work anywhere)
+curl https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/day08_Meeting_Action_Enforcer/transcript.txt
+```
+
+### 🤖 **Agent Endpoints**
+```bash
+# Meeting Action Enforcer
 curl -X POST http://localhost:3000/api/meeting-actions \
   -H "Content-Type: application/json" \
   -d '{"path": "/path/to/transcript.txt"}'
-```
 
-### Invoice Anomaly Detection
-```bash
+# Invoice Anomaly Detection
 curl http://localhost:3000/api/invoice-anomalies
-```
 
-### Support Ticket Summarization
-```bash
+# Support Ticket Summarization
 curl -X POST http://localhost:3000/api/support-brief \
   -H "Content-Type: application/json" \
   -d '{"path": "/path/to/tickets.json"}'
+```
+
+### 📊 **Data Access Patterns**
+```bash
+# Local + GitHub fallback (automatic)
+curl http://localhost:3000/api/agents/invoice-anomalies/data
+
+# Specific file with GitHub fallback
+curl http://localhost:3000/api/agents/invoice-anomalies/data?file=invoices.csv
+
+# Raw file content
+curl http://localhost:3000/api/agents/invoice-anomalies/data?file=invoices.csv&format=raw
 ```
 
 ## 🤝 Contributing
@@ -211,4 +266,4 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Ready to build the future of business automation?** 🚀
 
-[Get Started](docs/quick-start.md) | [View Agents](docs/agents/) | [API Docs](docs/api-reference.md) | [Examples](examples/)
+[Get Started](docs/quick-start.md) | [GitHub Data Access](docs/agent-development-guide.md#github-data-access-examples) | [View Agents](docs/agents/) | [API Docs](docs/api-reference.md)
