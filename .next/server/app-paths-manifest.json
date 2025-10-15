@@ -1,0 +1,8 @@
+{
+  "/api/agents/route": "app/api/agents/route.js",
+  "/api/agents/[agentId]/data/route": "app/api/agents/[agentId]/data/route.js",
+  "/api/invoice-anomalies/route": "app/api/invoice-anomalies/route.js",
+  "/api/seo-pages/route": "app/api/seo-pages/route.js",
+  "/api/support-brief/route": "app/api/support-brief/route.js",
+  "/api/meeting-actions/route": "app/api/meeting-actions/route.js"
+}
