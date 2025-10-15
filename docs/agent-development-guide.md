@@ -28,14 +28,30 @@ curl http://localhost:3000/api/agents?agent=invoice-anomalies
 
 ### 2. Access Agent Demo Data
 
+#### **🌐 From GitHub (No Local Setup Required)**
 ```bash
-# Get all demo data for an agent
+# Get all demo data for an agent directly from GitHub
+curl http://localhost:3000/api/github/invoice-anomalies
+
+# Get specific data file from GitHub
+curl http://localhost:3000/api/github/invoice-anomalies/invoices.csv
+
+# Get raw data file from GitHub
+curl http://localhost:3000/api/github/invoice-anomalies/invoices.csv?format=raw
+
+# Direct GitHub raw URL (works anywhere)
+curl https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/day25_Invoice_Fraud_Anomaly_Detector/invoices.csv
+```
+
+#### **💻 From Local Repository (Faster)**
+```bash
+# Get all demo data for an agent (local + GitHub fallback)
 curl http://localhost:3000/api/agents/invoice-anomalies/data
 
-# Get specific data file
+# Get specific data file (local + GitHub fallback)
 curl http://localhost:3000/api/agents/invoice-anomalies/data?file=invoices.csv
 
-# Get raw data file
+# Get raw data file (local + GitHub fallback)
 curl http://localhost:3000/api/agents/invoice-anomalies/data?file=invoices.csv&format=raw
 ```
 
@@ -93,18 +109,48 @@ Each agent has:
 - **Demo data files**: CSV, JSON, XML, or text files with realistic test data
 - **Documentation**: `/docs/agents/day{XX}-{agent-name}.md`
 - **API route**: `/app/api/{agent-route}/route.ts`
+- **GitHub access**: Direct URLs to raw data files
 
-### 3. Access Demo Data
+### 3. Access Demo Data (Multiple Methods)
 
+#### **Method 1: GitHub Direct Access (Recommended for Team Members)**
+```bash
+# Get agent info and GitHub URLs
+curl http://localhost:3000/api/github/invoice-anomalies
+
+# Access specific data files from GitHub
+curl http://localhost:3000/api/github/invoice-anomalies/invoices.csv
+
+# Direct GitHub raw URLs (work from anywhere)
+curl https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/day25_Invoice_Fraud_Anomaly_Detector/invoices.csv
+```
+
+#### **Method 2: Local Development (Automatic GitHub Fallback)**
 ```typescript
-// Using the data access system
+// Using the enhanced data access system
 import { loadCSVData, loadJSONData, getAgentDemoData } from "@/lib/data-access";
 
-// Load specific file
+// Load specific file (tries local first, then GitHub, then mock data)
 const invoices = await loadCSVData('invoice-anomalies', 'invoices.csv');
 
 // Load all demo data for an agent
 const allData = await getAgentDemoData('invoice-anomalies');
+
+// Response includes GitHub URLs for direct access
+console.log(invoices.githubUrls.raw); // Direct GitHub raw URL
+```
+
+#### **Method 3: Direct GitHub Integration**
+```typescript
+// Using GitHub-specific data access
+import { loadAgentDataFromGitHub, parseCSV } from "@/lib/github-data-access";
+
+// Load directly from GitHub
+const result = await loadAgentDataFromGitHub(
+  'day25_Invoice_Fraud_Anomaly_Detector',
+  'invoices.csv',
+  parseCSV
+);
 ```
 
 ### 4. Implement Agent API
@@ -271,14 +317,35 @@ John: We need to finalize the budget by Friday. @Sarah can you prepare the finan
 
 ## Team Collaboration
 
-### For Team Members
+### For Team Members (No Local Setup Required)
 
 1. **Pick an agent** from the planned list
-2. **Study the documentation** in `/docs/agents/`
-3. **Examine the demo data** in `/data/agents-seed-pack-full/`
-4. **Implement the API route** using the standardized system
-5. **Test thoroughly** with both real and mock data
-6. **Update the registry** to mark as implemented
+   ```bash
+   curl http://localhost:3000/api/agents?status=planned
+   ```
+
+2. **Access demo data directly from GitHub**
+   ```bash
+   # Get all data for an agent
+   curl http://localhost:3000/api/github/your-agent-id
+
+   # Get specific data files
+   curl http://localhost:3000/api/github/your-agent-id/data-file.csv
+   ```
+
+3. **Study the documentation** in `/docs/agents/` or on GitHub
+   ```
+   https://github.com/indranilbanerjee/hackathon-agents-starter/tree/main/docs/agents
+   ```
+
+4. **Examine the demo data** directly on GitHub
+   ```
+   https://github.com/indranilbanerjee/hackathon-agents-starter/tree/main/data/agents-seed-pack-full
+   ```
+
+5. **Implement the API route** using the standardized system
+6. **Test thoroughly** with GitHub data, local data, and mock data
+7. **Update the registry** to mark as implemented
 
 ### For Project Managers
 
@@ -286,6 +353,7 @@ John: We need to finalize the budget by Friday. @Sarah can you prepare the finan
 - **Monitor implementation** via the agents API
 - **Review documentation** for business impact and ROI
 - **Coordinate priorities** based on agent complexity and category
+- **Access live demo data** from GitHub for stakeholder reviews
 
 ## Advanced Features
 
@@ -324,4 +392,45 @@ const combinedAnalysis = analyzeInvoicesWithVendorSLA(invoiceData, vendorData);
 - [ ] Error handling implemented
 - [ ] Mock data fallbacks working
 
-This guide provides everything you need to work with individual agents and build full-fledged AI solutions using the 30 Agents Starter Repository framework.
+## 🌐 GitHub Data Access Examples
+
+### **Direct GitHub URLs for Any Agent**
+
+```bash
+# Pattern for any agent data file:
+https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/{dayFolder}/{filename}
+
+# Examples:
+https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/day25_Invoice_Fraud_Anomaly_Detector/invoices.csv
+https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/day08_Meeting_Action_Enforcer/transcript.txt
+https://raw.githubusercontent.com/indranilbanerjee/hackathon-agents-starter/main/data/agents-seed-pack-full/day30_Support_Ticket_Brief/tickets.json
+```
+
+### **API Endpoints for GitHub Access**
+
+```bash
+# Get agent info with GitHub URLs
+GET /api/github/{agentId}
+
+# Get specific file from GitHub
+GET /api/github/{agentId}/{filename}
+
+# Get raw file content from GitHub
+GET /api/github/{agentId}/{filename}?format=raw
+
+# Examples:
+curl http://localhost:3000/api/github/invoice-anomalies
+curl http://localhost:3000/api/github/meeting-actions/transcript.txt
+curl http://localhost:3000/api/github/seo-pages/sitemap.xml?format=raw
+```
+
+### **Team Member Workflow (No Local Setup)**
+
+1. **Browse available agents**: `curl http://localhost:3000/api/agents`
+2. **Pick an agent**: Choose from 26 planned agents
+3. **Access demo data**: `curl http://localhost:3000/api/github/{agentId}`
+4. **Get specific files**: `curl http://localhost:3000/api/github/{agentId}/{filename}`
+5. **Implement agent**: Use the data access patterns shown above
+6. **Test with GitHub data**: Automatic fallback ensures it always works
+
+This guide provides everything you need to work with individual agents and build full-fledged AI solutions using the 30 Agents Starter Repository framework, with **full GitHub integration for seamless team collaboration**.

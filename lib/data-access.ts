@@ -5,12 +5,26 @@
 
 import { readFileSync, existsSync } from "node:fs";
 import { getAgentConfig, getAgentDataPath } from "./agent-registry";
+import {
+  loadAgentDataFromGitHub,
+  parseCSV,
+  parseJSON,
+  generateGitHubUrls,
+  getAgentDemoDataFromGitHub,
+  type GitHubDataResult
+} from "./github-data-access";
 
 export interface DataAccessResult<T = any> {
   data: T;
   source: string;
   success: boolean;
   error?: string;
+  githubUrls?: {
+    raw: string;
+    blob: string;
+    api: string;
+    folder: string;
+  };
 }
 
 /**
@@ -53,12 +67,36 @@ export async function loadAgentData<T = any>(
     }
   }
 
+  const githubUrls = generateGitHubUrls(agent.dayFolder, filename);
+
+  // Try GitHub as fallback
+  try {
+    const githubResult = await loadAgentDataFromGitHub(
+      agent.dayFolder,
+      filename,
+      parser,
+      mockData
+    );
+
+    if (githubResult.success) {
+      return {
+        data: githubResult.data,
+        source: `github-${githubResult.source}`,
+        success: true,
+        githubUrls
+      };
+    }
+  } catch (error) {
+    // Continue to mock data fallback
+  }
+
   // If no file found, use mock data
   if (mockData) {
     return {
       data: mockData,
       source: 'mock-data',
-      success: true
+      success: true,
+      githubUrls
     };
   }
 
@@ -66,7 +104,8 @@ export async function loadAgentData<T = any>(
     data: null as T,
     source: 'not-found',
     success: false,
-    error: `No data file found for ${agentId}/${filename}`
+    error: `No data file found for ${agentId}/${filename} in local paths or GitHub`,
+    githubUrls
   };
 }
 
